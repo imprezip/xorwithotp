@@ -1,0 +1,365 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light theme (default fallback) */
+    --c-canvas: 244 247 252;
+    --c-canvas-2: 232 238 248;
+    --c-surface: 255 255 255;
+    --c-raised: 255 255 255;
+    --c-line: 15 23 42;
+    --c-line-strong: 15 23 42;
+    --c-ink: 15 23 42;
+    --c-muted: 71 85 105;
+    --c-faint: 100 116 139;
+    --c-accent: 8 145 178;
+    --c-accent-2: 124 58 237;
+    --c-ok: 4 120 87;
+    --c-warn: 180 83 9;
+    --c-danger: 190 18 60;
+    --glass-bg: 255 255 255;
+    --glass-alpha: 0.72;
+    --star: 51 65 85;
+    --line-rgb: 15 23 42;
+    --line-alpha: 0.16;
+    --line-warm-alpha: 0.1;
+  }
+
+  .dark {
+    /* Dark futuristic theme (default) */
+    --c-canvas: 6 9 16;
+    --c-canvas-2: 12 18 30;
+    --c-surface: 255 255 255;
+    --c-raised: 255 255 255;
+    --c-line: 226 232 240;
+    --c-line-strong: 226 232 240;
+    --c-ink: 226 232 240;
+    --c-muted: 156 173 198;
+    --c-faint: 119 135 162;
+    --c-accent: 56 189 248;
+    --c-accent-2: 167 139 250;
+    --c-ok: 52 211 153;
+    --c-warn: 251 191 36;
+    --c-danger: 251 113 133;
+    --glass-bg: 12 18 30;
+    --glass-alpha: 0.55;
+    --star: 190 214 255;
+    --line-rgb: 148 197 255;
+    --line-alpha: 0.14;
+    --line-warm-alpha: 0.08;
+  }
+
+  * {
+    @apply border-line/10;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
+    -webkit-text-size-adjust: 100%;
+    color-scheme: light;
+  }
+
+  /* Owned here rather than as an inline style on <html>, so a theme switch is a
+     single class change instead of a second mutation of the root element while
+     the browser is capturing the page. */
+  html.dark {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-canvas font-sans text-ink antialiased;
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition:
+      background-color 320ms ease,
+      color 320ms ease;
+    background-image:
+      radial-gradient(
+        1100px 620px at 12% -10%,
+        rgb(var(--c-accent) / 0.13),
+        transparent 60%
+      ),
+      radial-gradient(
+        900px 560px at 88% 4%,
+        rgb(var(--c-accent-2) / 0.12),
+        transparent 62%
+      ),
+      radial-gradient(
+        1000px 700px at 50% 108%,
+        rgb(var(--c-accent) / 0.08),
+        transparent 65%
+      );
+    background-attachment: fixed;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-accent/80 ring-offset-2 ring-offset-canvas;
+    border-radius: 0.4rem;
+  }
+
+  ::selection {
+    background: rgb(var(--c-accent) / 0.28);
+  }
+
+  /* Keep the whole page from ever scrolling sideways. */
+  #root {
+    overflow-x: clip;
+  }
+}
+
+@layer utilities {
+  /* Horizontal strip (the section nav) scrolls by touch, with no bar drawn. */
+  .scrollbar-none {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@layer components {
+  .glass {
+    background-color: rgb(var(--glass-bg) / var(--glass-alpha));
+    border: 1px solid rgb(var(--c-line) / 0.1);
+    box-shadow:
+      0 1px 0 0 rgb(255 255 255 / 0.05) inset,
+      0 24px 50px -30px rgb(0 0 0 / 0.7);
+    backdrop-filter: blur(14px);
+  }
+
+  .dark .glass {
+    border-color: rgb(var(--c-line) / 0.11);
+  }
+
+  .glass-soft {
+    background-color: rgb(var(--glass-bg) / calc(var(--glass-alpha) * 0.7));
+    border: 1px solid rgb(var(--c-line) / 0.08);
+  }
+
+  .card-hover {
+    transition:
+      transform 200ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 200ms ease,
+      box-shadow 200ms ease;
+  }
+
+  .card-hover:hover {
+    transform: translateY(-2px);
+    border-color: rgb(var(--c-accent) / 0.35);
+    box-shadow:
+      0 1px 0 0 rgb(255 255 255 / 0.06) inset,
+      0 26px 60px -32px rgb(0 0 0 / 0.8),
+      0 0 34px -18px rgb(var(--c-accent) / 0.6);
+  }
+
+  .btn {
+    @apply inline-flex select-none items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold;
+    transition:
+      transform 160ms cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 200ms ease,
+      border-color 200ms ease,
+      color 200ms ease,
+      box-shadow 200ms ease,
+      opacity 200ms ease;
+  }
+
+  .btn:active:not(:disabled) {
+    transform: translateY(1px) scale(0.99);
+  }
+
+  .btn:disabled {
+    @apply cursor-not-allowed opacity-45;
+  }
+
+  .btn-primary {
+    @apply border border-accent/40 text-canvas;
+    background-image: linear-gradient(
+      135deg,
+      rgb(var(--c-accent) / 0.95),
+      rgb(var(--c-accent-2) / 0.9)
+    );
+    box-shadow: 0 10px 30px -16px rgb(var(--c-accent) / 0.9);
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    box-shadow: 0 14px 34px -14px rgb(var(--c-accent) / 1);
+    filter: brightness(1.06);
+  }
+
+  .btn-ghost {
+    @apply border border-line/15 bg-raised/5 text-ink hover:border-accent/45 hover:bg-raised/10;
+  }
+
+  .btn-ghost:hover:not(:disabled) {
+    color: rgb(var(--c-accent));
+  }
+
+  .btn-quiet {
+    @apply text-muted hover:text-accent border border-transparent px-2 py-1;
+  }
+
+  .field {
+    @apply w-full rounded-xl border border-line/15 bg-canvas/40 px-3.5 py-2.5 text-sm text-ink;
+    font-family: theme('fontFamily.mono');
+    transition:
+      border-color 180ms ease,
+      box-shadow 180ms ease,
+      background-color 180ms ease;
+  }
+
+  .field::placeholder {
+    @apply text-faint/70;
+    font-family: theme('fontFamily.sans');
+  }
+
+  .field:hover {
+    @apply border-line/25;
+  }
+
+  .field:focus {
+    @apply border-accent/70 bg-canvas/70;
+    box-shadow: 0 0 0 3px rgb(var(--c-accent) / 0.18);
+    outline: none;
+  }
+
+  .field-error {
+    @apply border-danger/70;
+  }
+
+  .field-error:focus {
+    box-shadow: 0 0 0 3px rgb(var(--c-danger) / 0.2);
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-line/15 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider;
+  }
+
+  .code-block {
+    @apply overflow-x-auto rounded-xl border border-line/12 bg-canvas/50 p-3.5 font-mono text-[12.5px] leading-relaxed text-ink/90;
+    white-space: pre;
+    tab-size: 2;
+  }
+
+  .label {
+    @apply text-[11px] font-semibold uppercase tracking-[0.14em] text-muted;
+  }
+
+  .hairline {
+    background-image: linear-gradient(
+      90deg,
+      transparent,
+      rgb(var(--c-line) / 0.18),
+      transparent
+    );
+    height: 1px;
+  }
+}
+
+/* Expandable panels ---------------------------------------------------- */
+.reveal-grid {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-grid > * {
+  overflow: hidden;
+}
+
+.reveal-grid[data-open='true'] {
+  grid-template-rows: 1fr;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Scrollbars ------------------------------------------------------------ */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(var(--c-line) / 0.25) transparent;
+}
+
+*::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgb(var(--c-line) / 0.22);
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Theme wipe ------------------------------------------------------------ */
+/* A circle grows out of the theme switch and reveals the new theme. Both view
+   transition snapshots are real renderings of the page, so the text, the cards
+   and the constellation are revealed by the same circle, dark to light and
+   light to dark alike. */
+html.theme-wipe body {
+  transition: none;
+}
+
+/* The settle after the wipe is shortened on touch devices, where the switch is
+   still busy when the circle is done. */
+@media (pointer: coarse) {
+  body {
+    transition-duration: 180ms;
+  }
+
+  /* The live page is hidden for the length of the wipe and the bar is painted
+     into a snapshot instead. A backdrop filter has no backdrop in that bitmap,
+     so on a phone the header blinks out, smears, or lands a few pixels off, then
+     snaps back when the snapshots are dropped. A flat canvas colour for the same
+     few hundred milliseconds costs nothing and reads the same, and the blur comes
+     straight back afterwards. */
+  html.theme-wipe [data-page-header] {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background-color: rgb(var(--c-canvas));
+  }
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* The group decides when the snapshots are dropped, so it has to outlast the
+   circle, whose duration the UA default (250ms) would cut short. */
+::view-transition-group(root) {
+  animation-duration: 620ms;
+}
+
+::view-transition-old(root) {
+  z-index: 0;
+}
+
+::view-transition-new(root) {
+  z-index: 1;
+  animation: theme-circle-reveal 620ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* The `theme-circle-reveal` keyframes are generated per click in
+   `src/components/themeTransition.ts`, because the origin is the exact point of
+   the theme switch and the pseudo elements cannot be given a custom property
+   that is guaranteed to inherit. */

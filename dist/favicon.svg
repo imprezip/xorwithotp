@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="CryptoLab">
+  <title>CryptoLab</title>
+  <defs>
+    <linearGradient id="xor" x1="19" y1="19" x2="45" y2="45" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#38BDF8" />
+      <stop offset="1" stop-color="#A78BFA" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="15" fill="#060910" />
+  <rect
+    x="1"
+    y="1"
+    width="62"
+    height="62"
+    rx="14"
+    fill="none"
+    stroke="#38BDF8"
+    stroke-opacity="0.22"
+    stroke-width="1.5"
+  />
+  <g stroke="url(#xor)" stroke-width="9" stroke-linecap="round">
+    <line x1="21.5" y1="21.5" x2="42.5" y2="42.5" />
+    <line x1="42.5" y1="21.5" x2="21.5" y2="42.5" />
+  </g>
+</svg>
